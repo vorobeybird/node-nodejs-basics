@@ -4,17 +4,27 @@ import path from "path";
 export const create = async (fileName) => {
   const filePath = path.join("./files/", fileName);
 
-  await fs.access(filePath, function (error) {
-    try {
-      if (error) {
-        fs.writeFile(filePath, "I am fresh and young", { flag: "wx" }, () =>
-          console.log("File created")
-        );
-      } else {
-        throw "FS operation failed";
+  fs.open('myfile', 'wx', (err, fd) => {
+    if (err) {
+      if (err.code === 'EEXIST') {
+        console.error("FS operation failed");
+        return;
       }
-    } catch (e) {
-      console.log(e);
+  
+      throw "FS operation failed";
+    }
+  
+    try {
+        fs.writeFile(filePath, "I am fresh and young", { flag: "wx" }, () =>
+        console.log("File created")
+      );
+    } finally {
+        fs.close(fd, (err) => {
+        if (err) throw "FS operation failed";
+      });
     }
   });
+
 };
+
+create('Shit.txt');
