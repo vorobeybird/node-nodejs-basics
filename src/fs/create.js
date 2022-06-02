@@ -26,5 +26,3 @@ export const create = async (fileName) => {
   });
 
 };
-
-create('Shit.txt');
