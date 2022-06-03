@@ -4,7 +4,7 @@ import path from "path";
 export const create = async (fileName) => {
   const filePath = path.join("./files/", fileName);
 
-  fs.open('myfile', 'wx', (err, fd) => {
+  fs.open(filePath, 'wx', (err, fd) => {
     if (err) {
       if (err.code === 'EEXIST') {
         console.error("FS operation failed");
